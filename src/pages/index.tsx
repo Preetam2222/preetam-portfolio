@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   ChevronRight,
   Code2,
-  Frame,
-  SearchCheck,
+  FileSearch,
   Eye,
   MonitorSmartphone,
   GraduationCap,
@@ -18,9 +17,8 @@ import {
   Cloud,
   Layout,
   Sparkles,
-  Brain,
-  Download,
-  Send,
+  Brain, // Used in services array
+  Send,  // Used in Contact Form button
   Linkedin,
   Github,
   Phone,
@@ -176,7 +174,7 @@ const services = [
     service: "Machine Learning",
     description:
       "Developing scalable ML models, deep learning architectures (CNNs), and predictive analytics systems using PyTorch and TensorFlow.",
-    icon: Brain,
+    icon: Brain, // <--- This uses the 'Brain' import
   },
   {
     key: "Frontend",
@@ -197,7 +195,7 @@ const services = [
     service: "Cloud Computing",
     description:
       "Deploying scalable applications on AWS with experience in cloud workflows and performance optimization.",
-    icon: SearchCheck,
+    icon: FileSearch,
   },
   {
     key: "Data",
@@ -219,7 +217,8 @@ const roles = [
   "AI Engineer",
 ];
 
-function useRotatingRole(interval = 5000) { // Set default to 5000ms
+// --- Helper Function: useRotatingRole ---
+function useRotatingRole(interval = 5000) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -287,7 +286,7 @@ export default function Home() {
     message: "",
   });
 
-  // CHANGED: Increased to 5000ms (5 seconds) for easier reading
+  // Call the rotating role hook
   const currentRole = useRotatingRole(5000);
 
   // Smooth scroll + active nav
@@ -386,12 +385,12 @@ export default function Home() {
         <section
           id="home"
           data-scroll-section
-          className="mt-40 flex w-full flex-col items-center xl:mt-0 xl:min-h-screen xl:flex-row xl:justify-between"
+          className="mt-40 flex w-full flex-col items-center justify-center text-center xl:mt-0 xl:min-h-screen"
         >
-          <div className={styles.intro}>
+          <div className={cn(styles.intro, "flex flex-col items-center w-full")}>
             {/* ROLLING ROLES MARQUEE */}
             <div
-              className="flex w-full max-w-[300px] overflow-hidden sm:max-w-[400px] md:max-w-[500px]"
+              className="flex w-full max-w-[300px] overflow-hidden sm:max-w-[400px] md:max-w-[500px] mb-6"
               data-scroll
               data-scroll-direction="horizontal"
               data-scroll-speed=".09"
@@ -402,7 +401,7 @@ export default function Home() {
                 transition={{
                   repeat: Infinity,
                   ease: "linear",
-                  duration: 60, // CHANGED: Slowed down to 60 seconds
+                  duration: 60,
                 }}
                 style={{ width: "fit-content" }}
               >
@@ -417,7 +416,7 @@ export default function Home() {
               </motion.div>
             </div>
 
-            <div>
+            <div className="flex flex-col items-center">
               <h1
                 data-scroll
                 data-scroll-enable-touch-speed
@@ -436,7 +435,7 @@ export default function Home() {
                 data-scroll
                 data-scroll-enable-touch-speed
                 data-scroll-speed=".06"
-                className="mt-1 max-w-lg tracking-tight text-muted-foreground 2xl:text-xl"
+                className="mt-4 max-w-2xl tracking-tight text-muted-foreground 2xl:text-xl text-center"
               >
                 I am a Master’s in Computer Science student at George Washington
                 University and a published IEEE Researcher. <br />
@@ -451,50 +450,90 @@ export default function Home() {
                 problems.
               </p>
             </div>
-            <span
+            
+            <div
               data-scroll
               data-scroll-enable-touch-speed
               data-scroll-speed=".06"
-              className="mt-4 flex flex-row flex-wrap items-center gap-3 pt-2"
+              className="mt-8 flex flex-col items-center gap-4"
             >
-              <Link href="mailto:vallabhanenipreetam@gmail.com" passHref>
-                <Button>
-                  Get in touch <ChevronRight className="ml-1 h-4 w-4" />
+              {/* Buttons Row */}
+              <div className="flex flex-row flex-wrap items-center justify-center gap-3">
+                <Link href="mailto:vallabhanenipreetam@gmail.com" passHref>
+                  <Button>
+                    Get In Touch <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline"
+                  onClick={() => scrollTo(document.querySelector("#about"))}
+                >
+                  Learn More
                 </Button>
-              </Link>
-              <Button
-                variant="outline"
-                onClick={() => scrollTo(document.querySelector("#about"))}
-              >
-                Learn more
-              </Button>
-              
-              {/* Hero social links */}
-              <div className="flex items-center gap-3 text-sm text-muted-foreground ml-2">
-                <Link
-                  href="https://www.linkedin.com/in/preetam-vallabhaneni/"
-                  target="_blank"
-                  className="underline-offset-4 hover:underline"
-                >
-                  LinkedIn
-                </Link>
-                <span className="h-3 w-px bg-border" />
-                <Link
-                  href="https://github.com/Preetam2222"
-                  target="_blank"
-                  className="underline-offset-4 hover:underline"
-                >
-                  GitHub
-                </Link>
-                <span className="h-3 w-px bg-border" />
-                <Link
-                  href="tel:+15712767511"
-                  className="underline-offset-4 hover:underline"
-                >
-                  +1 (571) 276 7511
-                </Link>
               </div>
-            </span>
+
+              {/* Social Links Row with Custom Tooltips */}
+              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                
+                {/* LinkedIn */}
+                <div className="group relative">
+                  <Link href="https://www.linkedin.com/in/preetam-vallabhaneni/" target="_blank">
+                    <Button variant="outline" size="icon" className="h-10 w-10">
+                      <Linkedin className="h-5 w-5" />
+                      <span className="sr-only">LinkedIn</span>
+                    </Button>
+                  </Link>
+                  {/* Tooltip */}
+                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                    Connect on LinkedIn
+                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                  </span>
+                </div>
+
+                {/* GitHub */}
+                <div className="group relative">
+                  <Link href="https://github.com/Preetam2222" target="_blank">
+                    <Button variant="outline" size="icon" className="h-10 w-10">
+                      <Github className="h-5 w-5" />
+                      <span className="sr-only">GitHub</span>
+                    </Button>
+                  </Link>
+                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                    View my Code
+                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                  </span>
+                </div>
+
+                {/* Phone */}
+                <div className="group relative">
+                  <Link href="tel:+15712767511">
+                    <Button variant="outline" size="icon" className="h-10 w-10">
+                      <Phone className="h-5 w-5" />
+                      <span className="sr-only">Phone</span>
+                    </Button>
+                  </Link>
+                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                    +1 (571) 276 7511
+                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                  </span>
+                </div>
+
+                {/* Email */}
+                <div className="group relative">
+                  <Link href="mailto:vallabhanenipreetam@gmail.com">
+                    <Button variant="outline" size="icon" className="h-10 w-10">
+                      <Mail className="h-5 w-5" />
+                      <span className="sr-only">Email</span>
+                    </Button>
+                  </Link>
+                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                    vallabhanenipreetam@gmail.com
+                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                  </span>
+                </div>
+
+              </div>
+            </div>
 
             <div
               className={cn(
@@ -506,11 +545,12 @@ export default function Home() {
               <TriangleDownIcon className="mt-1 animate-bounce" />
             </div>
           </div>
+          
           <div
             data-scroll
             data-scroll-speed="-.01"
             id={styles["canvas-container"]}
-            className="mt-14 h-full w-full xl:mt-0"
+            className="absolute top-0 left-0 -z-10 h-full w-full opacity-50 xl:opacity-100 xl:mt-0 pointer-events-none"
           >
             <Suspense fallback={<span>Loading...</span>}>
               <Spline scene="/assets/scene.splinecode" />
@@ -887,7 +927,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Contact Section - Updated Layout */}
+        {/* Contact Section - Updated Layout without Resume */}
         <section id="contact" data-scroll-section className="my-64">
           <div
             data-scroll
@@ -897,26 +937,9 @@ export default function Home() {
           >
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-start">
               
-              {/* LEFT COLUMN: Resume & Info */}
+              {/* LEFT COLUMN: Info */}
               <div className="flex flex-col items-start text-left space-y-8">
-                {/* Resume Download */}
-                <div className="w-full">
-                  <h3 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-                    Resume
-                  </h3>
-                  <Link href="/assets/PREETAM%20RESUME.pdf" target="_blank" className="w-full group">
-                    <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10 hover:border-primary/50">
-                      <div className="flex flex-col">
-                        <span className="font-medium text-foreground">PREETAM RESUME</span>
-                        <span className="text-xs text-muted-foreground mt-1">
-                          Download my full resume
-                        </span>
-                      </div>
-                      <Download className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                  </Link>
-                </div>
-
+                
                 {/* Text Content */}
                 <div>
                   <h2 className="text-4xl font-medium tracking-tighter xl:text-6xl">
@@ -929,48 +952,82 @@ export default function Home() {
                     contribute to meaningful projects.
                   </p>
                   <ul className="mt-4 text-sm text-secondary-foreground space-y-2 list-disc pl-5">
-                    <li>Roles in full‑stack, backend, or AI engineering.</li>
-                    <li>Teams building data‑intensive or cloud‑native systems.</li>
-                    <li>Environments that value research‑driven problem solving.</li>
+                    <li>Roles In Full‑Stack, Backend, Or AI Engineering.</li>
+                    <li>Teams Building Data‑Intensive Or Cloud‑Native Systems.</li>
+                    <li>Environments That Value Research‑Driven Problem Solving.</li>
                   </ul>
                 </div>
 
-                {/* Social Icons (Symbols) */}
+                {/* Social Icons (Symbols) with Custom Hover Tooltips */}
                 <div className="flex flex-col gap-4 w-full">
                   <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                     Connect
                   </h3>
                   <div className="flex flex-wrap gap-3">
-                    <Link href="https://www.linkedin.com/in/preetam-vallabhaneni/" target="_blank">
-                      <Button variant="outline" size="icon" className="h-10 w-10">
-                        <Linkedin className="h-5 w-5" />
-                        <span className="sr-only">LinkedIn</span>
-                      </Button>
-                    </Link>
-                    <Link href="https://github.com/Preetam2222" target="_blank">
-                      <Button variant="outline" size="icon" className="h-10 w-10">
-                        <Github className="h-5 w-5" />
-                        <span className="sr-only">GitHub</span>
-                      </Button>
-                    </Link>
-                    <Link href="tel:+15712767511">
-                      <Button variant="outline" size="icon" className="h-10 w-10">
-                        <Phone className="h-5 w-5" />
-                        <span className="sr-only">Phone</span>
-                      </Button>
-                    </Link>
-                    <Link href="mailto:vallabhanenipreetam@gmail.com">
-                      <Button variant="outline" size="icon" className="h-10 w-10">
-                        <Mail className="h-5 w-5" />
-                        <span className="sr-only">Email</span>
-                      </Button>
-                    </Link>
+                    
+                    {/* LinkedIn */}
+                    <div className="group relative">
+                      <Link href="https://www.linkedin.com/in/preetam-vallabhaneni/" target="_blank">
+                        <Button variant="outline" size="icon" className="h-10 w-10">
+                          <Linkedin className="h-5 w-5" />
+                          <span className="sr-only">LinkedIn</span>
+                        </Button>
+                      </Link>
+                      {/* Tooltip */}
+                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                        Connect on LinkedIn
+                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                      </span>
+                    </div>
+
+                    {/* GitHub */}
+                    <div className="group relative">
+                      <Link href="https://github.com/Preetam2222" target="_blank">
+                        <Button variant="outline" size="icon" className="h-10 w-10">
+                          <Github className="h-5 w-5" />
+                          <span className="sr-only">GitHub</span>
+                        </Button>
+                      </Link>
+                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                        View my Code
+                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                      </span>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="group relative">
+                      <Link href="tel:+15712767511">
+                        <Button variant="outline" size="icon" className="h-10 w-10">
+                          <Phone className="h-5 w-5" />
+                          <span className="sr-only">Phone</span>
+                        </Button>
+                      </Link>
+                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                        +1 (571) 276 7511
+                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                      </span>
+                    </div>
+
+                    {/* Email */}
+                    <div className="group relative">
+                      <Link href="mailto:vallabhanenipreetam@gmail.com">
+                        <Button variant="outline" size="icon" className="h-10 w-10">
+                          <Mail className="h-5 w-5" />
+                          <span className="sr-only">Email</span>
+                        </Button>
+                      </Link>
+                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
+                        vallabhanenipreetam@gmail.com
+                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
+                      </span>
+                    </div>
+
                   </div>
                 </div>
 
-                 <Link href="mailto:vallabhanenipreetam@gmail.com" passHref>
+                 <Link href="mailto:vallabhanenipreetam@gmail.com" passHref title="Send an Email">
                     <Button>
-                        Get in touch
+                        Get In Touch
                         <ChevronRight className="ml-1 h-4 w-4" />
                     </Button>
                 </Link>
@@ -978,7 +1035,7 @@ export default function Home() {
 
               {/* RIGHT COLUMN: Send Message Form */}
               <div className="flex flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-sm">
-                <h3 className="mb-6 text-xl font-semibold text-center">Send me a message</h3>
+                <h3 className="mb-6 text-xl font-semibold text-center">Send Me A Message</h3>
                 <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 text-left">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="flex flex-col gap-2">
@@ -1030,7 +1087,7 @@ export default function Home() {
                       placeholder="Hello Preetam, I'd like to discuss..."
                     />
                   </div>
-                  <Button type="submit" className="mt-4 w-full">
+                  <Button type="submit" className="mt-4 w-full" title="Send Message via Email Client">
                     Send Message <Send className="ml-2 h-4 w-4" />
                   </Button>
                 </form>
