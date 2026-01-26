@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import {
   ChevronRight,
   Code2,
-  FileSearch,
+  Frame,
+  SearchCheck,
   Eye,
   MonitorSmartphone,
   GraduationCap,
@@ -17,8 +18,9 @@ import {
   Cloud,
   Layout,
   Sparkles,
-  Brain, // Used in services array
-  Send,  // Used in Contact Form button
+  Brain,
+  Download,
+  Send,
   Linkedin,
   Github,
   Phone,
@@ -75,7 +77,17 @@ const techSkills = [
   {
     category: "AI & Machine Learning",
     icon: Cpu,
-    skills: ["PyTorch", "TensorFlow", "Scikit-learn", "Keras", "OpenCV", "NumPy", "Pandas", "CNN/RNN", "NLP"],
+    skills: [
+      "PyTorch",
+      "TensorFlow",
+      "Scikit-learn",
+      "Keras",
+      "OpenCV",
+      "NumPy",
+      "Pandas",
+      "CNN/RNN",
+      "NLP",
+    ],
   },
   {
     category: "Cloud & DevOps",
@@ -174,7 +186,7 @@ const services = [
     service: "Machine Learning",
     description:
       "Developing scalable ML models, deep learning architectures (CNNs), and predictive analytics systems using PyTorch and TensorFlow.",
-    icon: Brain, // <--- This uses the 'Brain' import
+    icon: Brain,
   },
   {
     key: "Frontend",
@@ -195,7 +207,7 @@ const services = [
     service: "Cloud Computing",
     description:
       "Deploying scalable applications on AWS with experience in cloud workflows and performance optimization.",
-    icon: FileSearch,
+    icon: SearchCheck,
   },
   {
     key: "Data",
@@ -217,15 +229,11 @@ const roles = [
   "AI Engineer",
 ];
 
-// --- Helper Function: useRotatingRole ---
 function useRotatingRole(interval = 5000) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(
-      () => setIndex((prev) => (prev + 1) % roles.length),
-      interval
-    );
+    const id = setInterval(() => setIndex((prev) => (prev + 1) % roles.length), interval);
     return () => clearInterval(id);
   }, [interval]);
 
@@ -274,9 +282,7 @@ export default function Home() {
   const [count, setCount] = useState<number>(0);
 
   const [activeFilter, setActiveFilter] = useState<string | "All">("All");
-  const [activeProject, setActiveProject] = useState<
-    (typeof projects)[number] | null
-  >(null);
+  const [activeProject, setActiveProject] = useState<(typeof projects)[number] | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -286,7 +292,6 @@ export default function Home() {
     message: "",
   });
 
-  // Call the rotating role hook
   const currentRole = useRotatingRole(5000);
 
   // Smooth scroll + active nav
@@ -344,9 +349,7 @@ export default function Home() {
 
   // Tilt effect
   useEffect(() => {
-    const tilt: HTMLElement[] = Array.from(
-      document.querySelectorAll("#tilt")
-    ) as HTMLElement[];
+    const tilt: HTMLElement[] = Array.from(document.querySelectorAll("#tilt")) as HTMLElement[];
     if (!tilt.length) return;
 
     VanillaTilt.init(tilt, {
@@ -365,16 +368,12 @@ export default function Home() {
     const { name, email, subject, message } = formData;
     const mailtoLink = `mailto:vallabhanenipreetam@gmail.com?subject=${encodeURIComponent(
       subject
-    )}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
+    )}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
     window.location.href = mailtoLink;
   };
 
   const filteredProjects =
-    activeFilter === "All"
-      ? projects
-      : projects.filter((p) => p.tags?.includes(activeFilter));
+    activeFilter === "All" ? projects : projects.filter((p) => p.tags?.includes(activeFilter));
 
   return (
     <Container>
@@ -385,12 +384,12 @@ export default function Home() {
         <section
           id="home"
           data-scroll-section
-          className="mt-40 flex w-full flex-col items-center justify-center text-center xl:mt-0 xl:min-h-screen"
+          className="mt-40 flex w-full flex-col items-center xl:mt-0 xl:min-h-screen xl:flex-row xl:justify-between"
         >
-          <div className={cn(styles.intro, "flex flex-col items-center w-full")}>
+          <div className={styles.intro}>
             {/* ROLLING ROLES MARQUEE */}
             <div
-              className="flex w-full max-w-[300px] overflow-hidden sm:max-w-[400px] md:max-w-[500px] mb-6"
+              className="flex w-full max-w-[300px] overflow-hidden sm:max-w-[400px] md:max-w-[500px]"
               data-scroll
               data-scroll-direction="horizontal"
               data-scroll-speed=".09"
@@ -406,17 +405,14 @@ export default function Home() {
                 style={{ width: "fit-content" }}
               >
                 {[...roles, ...roles].map((role, i) => (
-                  <span
-                    key={i}
-                    className={cn(styles.pill, "whitespace-nowrap")}
-                  >
+                  <span key={i} className={cn(styles.pill, "whitespace-nowrap")}>
                     {role}
                   </span>
                 ))}
               </motion.div>
             </div>
 
-            <div className="flex flex-col items-center">
+            <div>
               <h1
                 data-scroll
                 data-scroll-enable-touch-speed
@@ -435,122 +431,66 @@ export default function Home() {
                 data-scroll
                 data-scroll-enable-touch-speed
                 data-scroll-speed=".06"
-                className="mt-4 max-w-2xl tracking-tight text-muted-foreground 2xl:text-xl text-center"
+                className="mt-1 max-w-lg tracking-tight text-muted-foreground 2xl:text-xl"
               >
-                I am a Master’s in Computer Science student at George Washington
-                University and a published IEEE Researcher. <br />
-                <span className="text-gradient clash-grotesk font-medium">
-                  {currentRole}
-                </span>{" "}
-                bridging Software Engineering and Artificial Intelligence with
-                full‑stack development (Java, Python, AWS) and advanced
-                Generative AI and Computer Vision. From architecting real-time
-                analytics dashboards to deploying malware detection pipelines, I
-                engineer intelligent, scalable systems that solve complex
-                problems.
+                 A passionate AI Engineer and IEEE published researcher with
+              expertise in Full-Stack development, Generative AI, and Computer
+              Vision. Currently pursuing a Master&apos;s in Computer Science at
+              George Washington University.
               </p>
             </div>
-            
-            <div
+            <span
               data-scroll
               data-scroll-enable-touch-speed
               data-scroll-speed=".06"
-              className="mt-8 flex flex-col items-center gap-4"
+              className="mt-4 flex flex-row flex-wrap items-center gap-3 pt-2"
             >
-              {/* Buttons Row */}
-              <div className="flex flex-row flex-wrap items-center justify-center gap-3">
-                <Link href="mailto:vallabhanenipreetam@gmail.com" passHref>
-                  <Button>
-                    Get In Touch <ChevronRight className="ml-1 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Button
-                  variant="outline"
-                  onClick={() => scrollTo(document.querySelector("#about"))}
-                >
-                  Learn More
+              <Link href="mailto:vallabhanenipreetam@gmail.com" passHref>
+                <Button>
+                  Get in touch <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
+              </Link>
+              <Button
+                variant="outline"
+                onClick={() => scrollTo(document.querySelector("#about"))}
+              >
+                Learn more
+              </Button>
+
+              {/* Hero social links */}
+              <div className="flex items-center gap-3 text-sm text-muted-foreground ml-2">
+                <Link
+                  href="https://www.linkedin.com/in/preetam-vallabhaneni/"
+                  target="_blank"
+                  className="underline-offset-4 hover:underline"
+                >
+                  LinkedIn
+                </Link>
+                <span className="h-3 w-px bg-border" />
+                <Link
+                  href="https://github.com/Preetam2222"
+                  target="_blank"
+                  className="underline-offset-4 hover:underline"
+                >
+                  GitHub
+                </Link>
+                <span className="h-3 w-px bg-border" />
+                <Link href="tel:+15712767511" className="underline-offset-4 hover:underline">
+                  +1 (571) 276 7511
+                </Link>
               </div>
+            </span>
 
-              {/* Social Links Row with Custom Tooltips */}
-              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                
-                {/* LinkedIn */}
-                <div className="group relative">
-                  <Link href="https://www.linkedin.com/in/preetam-vallabhaneni/" target="_blank">
-                    <Button variant="outline" size="icon" className="h-10 w-10">
-                      <Linkedin className="h-5 w-5" />
-                      <span className="sr-only">LinkedIn</span>
-                    </Button>
-                  </Link>
-                  {/* Tooltip */}
-                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                    Connect on LinkedIn
-                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                  </span>
-                </div>
-
-                {/* GitHub */}
-                <div className="group relative">
-                  <Link href="https://github.com/Preetam2222" target="_blank">
-                    <Button variant="outline" size="icon" className="h-10 w-10">
-                      <Github className="h-5 w-5" />
-                      <span className="sr-only">GitHub</span>
-                    </Button>
-                  </Link>
-                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                    View my Code
-                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                  </span>
-                </div>
-
-                {/* Phone */}
-                <div className="group relative">
-                  <Link href="tel:+15712767511">
-                    <Button variant="outline" size="icon" className="h-10 w-10">
-                      <Phone className="h-5 w-5" />
-                      <span className="sr-only">Phone</span>
-                    </Button>
-                  </Link>
-                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                    +1 (571) 276 7511
-                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                  </span>
-                </div>
-
-                {/* Email */}
-                <div className="group relative">
-                  <Link href="mailto:vallabhanenipreetam@gmail.com">
-                    <Button variant="outline" size="icon" className="h-10 w-10">
-                      <Mail className="h-5 w-5" />
-                      <span className="sr-only">Email</span>
-                    </Button>
-                  </Link>
-                  <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                    vallabhanenipreetam@gmail.com
-                    <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                  </span>
-                </div>
-
-              </div>
-            </div>
-
-            <div
-              className={cn(
-                styles.scroll,
-                isScrolled && styles["scroll--hidden"]
-              )}
-            >
+            <div className={cn(styles.scroll, isScrolled && styles["scroll--hidden"])}>
               Scroll to discover{" "}
               <TriangleDownIcon className="mt-1 animate-bounce" />
             </div>
           </div>
-          
           <div
             data-scroll
             data-scroll-speed="-.01"
             id={styles["canvas-container"]}
-            className="absolute top-0 left-0 -z-10 h-full w-full opacity-50 xl:opacity-100 xl:mt-0 pointer-events-none"
+            className="mt-14 h-full w-full xl:mt-0"
           >
             <Suspense fallback={<span>Loading...</span>}>
               <Spline scene="/assets/scene.splinecode" />
@@ -580,7 +520,7 @@ export default function Home() {
             {/* Text & Stats */}
             <div className="flex flex-col space-y-8 text-center xl:text-left">
               <p className="text-lg leading-relaxed text-muted-foreground">
-                I am a Computer Science graduate student at George Washington
+                 I am a Computer Science graduate student at George Washington
                 University combining advanced research with scalable
                 engineering. As an IEEE published researcher, I have developed
                 IoT malware detection pipelines and CNN-based emotion
@@ -794,10 +734,7 @@ export default function Home() {
               >
                 <CarouselContent>
                   {filteredProjects.map((project) => (
-                    <CarouselItem
-                      key={project.title}
-                      className="md:basis-1/2"
-                    >
+                    <CarouselItem key={project.title} className="md:basis-1/2">
                       <Card
                         id="tilt"
                         className="cursor-pointer"
@@ -927,7 +864,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Contact Section - Updated Layout without Resume */}
+        {/* Contact Section - Updated Layout (resume removed) */}
         <section id="contact" data-scroll-section className="my-64">
           <div
             data-scroll
@@ -936,10 +873,8 @@ export default function Home() {
             className="rounded-lg bg-gradient-to-br from-primary/[6.5%] to-white/5 px-8 py-16 xl:py-24"
           >
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-start">
-              
               {/* LEFT COLUMN: Info */}
               <div className="flex flex-col items-start text-left space-y-8">
-                
                 {/* Text Content */}
                 <div>
                   <h2 className="text-4xl font-medium tracking-tighter xl:text-6xl">
@@ -952,147 +887,148 @@ export default function Home() {
                     contribute to meaningful projects.
                   </p>
                   <ul className="mt-4 text-sm text-secondary-foreground space-y-2 list-disc pl-5">
-                    <li>Roles In Full‑Stack, Backend, Or AI Engineering.</li>
-                    <li>Teams Building Data‑Intensive Or Cloud‑Native Systems.</li>
-                    <li>Environments That Value Research‑Driven Problem Solving.</li>
+                    <li>Roles in full‑stack, backend, or AI engineering.</li>
+                    <li>Teams building data‑intensive or cloud‑native systems.</li>
+                    <li>Environments that value research‑driven problem solving.</li>
                   </ul>
                 </div>
 
-                {/* Social Icons (Symbols) with Custom Hover Tooltips */}
+                {/* Social Icons (Symbols) */}
                 <div className="flex flex-col gap-4 w-full">
                   <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                     Connect
                   </h3>
                   <div className="flex flex-wrap gap-3">
-                    
-                    {/* LinkedIn */}
-                    <div className="group relative">
-                      <Link href="https://www.linkedin.com/in/preetam-vallabhaneni/" target="_blank">
-                        <Button variant="outline" size="icon" className="h-10 w-10">
-                          <Linkedin className="h-5 w-5" />
-                          <span className="sr-only">LinkedIn</span>
-                        </Button>
-                      </Link>
-                      {/* Tooltip */}
-                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                        Connect on LinkedIn
-                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                      </span>
-                    </div>
-
-                    {/* GitHub */}
-                    <div className="group relative">
-                      <Link href="https://github.com/Preetam2222" target="_blank">
-                        <Button variant="outline" size="icon" className="h-10 w-10">
-                          <Github className="h-5 w-5" />
-                          <span className="sr-only">GitHub</span>
-                        </Button>
-                      </Link>
-                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                        View my Code
-                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                      </span>
-                    </div>
-
-                    {/* Phone */}
-                    <div className="group relative">
-                      <Link href="tel:+15712767511">
-                        <Button variant="outline" size="icon" className="h-10 w-10">
-                          <Phone className="h-5 w-5" />
-                          <span className="sr-only">Phone</span>
-                        </Button>
-                      </Link>
-                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                        +1 (571) 276 7511
-                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                      </span>
-                    </div>
-
-                    {/* Email */}
-                    <div className="group relative">
-                      <Link href="mailto:vallabhanenipreetam@gmail.com">
-                        <Button variant="outline" size="icon" className="h-10 w-10">
-                          <Mail className="h-5 w-5" />
-                          <span className="sr-only">Email</span>
-                        </Button>
-                      </Link>
-                      <span className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 scale-0 rounded bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 shadow-lg transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 whitespace-nowrap">
-                        vallabhanenipreetam@gmail.com
-                        <div className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-primary"></div>
-                      </span>
-                    </div>
-
+                    <Link
+                      href="https://www.linkedin.com/in/preetam-vallabhaneni/"
+                      target="_blank"
+                    >
+                      <Button variant="outline" size="icon" className="h-10 w-10">
+                        <Linkedin className="h-5 w-5" />
+                        <span className="sr-only">LinkedIn</span>
+                      </Button>
+                    </Link>
+                    <Link href="https://github.com/Preetam2222" target="_blank">
+                      <Button variant="outline" size="icon" className="h-10 w-10">
+                        <Github className="h-5 w-5" />
+                        <span className="sr-only">GitHub</span>
+                      </Button>
+                    </Link>
+                    <Link href="tel:+15712767511">
+                      <Button variant="outline" size="icon" className="h-10 w-10">
+                        <Phone className="h-5 w-5" />
+                        <span className="sr-only">Phone</span>
+                      </Button>
+                    </Link>
+                    <Link href="mailto:vallabhanenipreetam@gmail.com">
+                      <Button variant="outline" size="icon" className="h-10 w-10">
+                        <Mail className="h-5 w-5" />
+                        <span className="sr-only">Email</span>
+                      </Button>
+                    </Link>
                   </div>
                 </div>
 
-                 <Link href="mailto:vallabhanenipreetam@gmail.com" passHref title="Send an Email">
-                    <Button>
-                        Get In Touch
-                        <ChevronRight className="ml-1 h-4 w-4" />
-                    </Button>
+                <Link href="mailto:vallabhanenipreetam@gmail.com" passHref>
+                  <Button>
+                    Get in touch
+                    <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
                 </Link>
               </div>
 
               {/* RIGHT COLUMN: Send Message Form */}
               <div className="flex flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-sm">
-                <h3 className="mb-6 text-xl font-semibold text-center">Send Me A Message</h3>
-                <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 text-left">
+                <h3 className="mb-6 text-xl font-semibold text-center">
+                  Send me a message
+                </h3>
+                <form
+                  onSubmit={handleFormSubmit}
+                  className="flex flex-col gap-4 text-left"
+                >
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="name" className="text-sm font-medium text-muted-foreground">Name</label>
+                      <label
+                        htmlFor="name"
+                        className="text-sm font-medium text-muted-foreground"
+                      >
+                        Name
+                      </label>
                       <input
                         required
                         type="text"
                         id="name"
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
                         className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none placeholder:text-muted-foreground/50"
                         placeholder="Your Name"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email</label>
+                      <label
+                        htmlFor="email"
+                        className="text-sm font-medium text-muted-foreground"
+                      >
+                        Email
+                      </label>
                       <input
                         required
                         type="email"
                         id="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                         className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none placeholder:text-muted-foreground/50"
                         placeholder="your@email.com"
                       />
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="subject" className="text-sm font-medium text-muted-foreground">Subject</label>
+                    <label
+                      htmlFor="subject"
+                      className="text-sm font-medium text-muted-foreground"
+                    >
+                      Subject
+                    </label>
                     <input
                       required
                       type="text"
                       id="subject"
                       value={formData.subject}
-                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, subject: e.target.value })
+                      }
                       className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none placeholder:text-muted-foreground/50"
                       placeholder="What's this about?"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="message" className="text-sm font-medium text-muted-foreground">Message</label>
+                    <label
+                      htmlFor="message"
+                      className="text-sm font-medium text-muted-foreground"
+                    >
+                      Message
+                    </label>
                     <textarea
                       required
                       id="message"
                       rows={4}
                       value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                       className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none placeholder:text-muted-foreground/50 resize-none"
                       placeholder="Hello Preetam, I'd like to discuss..."
                     />
                   </div>
-                  <Button type="submit" className="mt-4 w-full" title="Send Message via Email Client">
+                  <Button type="submit" className="mt-4 w-full">
                     Send Message <Send className="ml-2 h-4 w-4" />
                   </Button>
                 </form>
               </div>
-
             </div>
           </div>
         </section>

@@ -20,7 +20,7 @@
     "@splinetool/runtime": "^1.0.38",
     "@t3-oss/env-nextjs": "^0.7.1",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "8.0.0-rc21",
     "framer-motion": "^10.18.0",
@@ -32,7 +32,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "^0.33.2",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vanilla-tilt": "^1.8.1",
     "zod": "^3.22.4"
